@@ -161,12 +161,16 @@ public class CssRuleSet extends CssStatement {
      * @param declarations the declarations
      */
     private static void splitDeclarationsIntoNormalAndImportant(List<CssDeclaration> declarations, List<CssDeclaration> normalDeclarations, List<CssDeclaration> importantDeclarations) {
-        for (CssDeclaration declaration : declarations) {
-            int exclIndex = declaration.getExpression().indexOf('!');
-            if (exclIndex > 0 && importantMatcher.matcher(declaration.getExpression()).matches()) {
-                importantDeclarations.add(new CssDeclaration(declaration.getProperty(), declaration.getExpression().substring(0, exclIndex).trim()));
-            } else {
-                normalDeclarations.add(declaration);
+        if (declarations != null) {
+            for (CssDeclaration declaration : declarations) {
+                if (declaration != null && declaration.getExpression() != null) {
+                    int exclIndex = declaration.getExpression().indexOf('!');
+                    if (exclIndex > 0 && importantMatcher.matcher(declaration.getExpression()).matches()) {
+                        importantDeclarations.add(new CssDeclaration(declaration.getProperty(), declaration.getExpression().substring(0, exclIndex).trim()));
+                    } else {
+                        normalDeclarations.add(declaration);
+                    }
+                }
             }
         }
     }
